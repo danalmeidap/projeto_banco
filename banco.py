@@ -5,23 +5,27 @@ def depositar(valor):
     print("Depósito realizado com sucesso!")
 
 
-def sacar(valor):
+def saque_valido(valor):
     global saldo, extrato, numero_saques
     if numero_saques < LIMITE_SAQUES and valor <= limite and valor <= saldo:
+        return True
+    return False
+
+
+def sacar(valor):
+    global saldo, extrato, numero_saques
+    if saque_valido(valor):
         saldo -= valor
         extrato += "Saque: R$ {:.2f}\n".format(valor)
         numero_saques += 1
         print("Saque realizado com sucesso!")
     else:
-        if numero_saques >= LIMITE_SAQUES:
-            print("Número máximo de saques diários atingido.")
-        elif valor > limite:
-            print("Valor do saque excede o limite permitido.")
-        else:
-            print("Valor inválido para saque.")
+        print(
+            "Saque inválido! Verifique o valor, limite ou número de saques realizados."
+        )
 
 
-def exibir_extrato(valor):
+def exibir_extrato():
     global saldo, extrato
     print("\n================== Extrato ==================")
     if not extrato:
