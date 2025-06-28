@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Union
 
 
 def criar_usuario(nome: str, data_nascimento: str, cpf: str, endereco: str) -> str:
@@ -15,8 +15,7 @@ def criar_usuario(nome: str, data_nascimento: str, cpf: str, endereco: str) -> s
     return "Usuário criado com sucesso: {}.".format(nome)
 
 
-def buscar_usuario(cpf: str) -> Dict or None:  # type: ignore
-    print(usuarios)
+def buscar_usuario(cpf: str) -> Union[Dict[str, str], None]:
     cpf_limpo = cpf.replace(".", "").replace("-", "")
     for usuario in usuarios:
         if cpf_limpo in usuario:
