@@ -1,4 +1,4 @@
-def check_str(msg):
+def check_str(msg:str) -> str:
     while True:
         try:
             value = str(input(msg))
@@ -11,7 +11,7 @@ def check_str(msg):
             return value
 
 
-def check_float(msg):
+def check_float(msg:str) -> float:
     while True:
         try:
             value = float(input(msg))
@@ -26,12 +26,8 @@ def check_float(msg):
             return value
 
 
-def is_valid_option(option):
-    if option in VALID_OPTIONS:
-        return True
-    else:
-        print("Invalid option, please try again.")
-        return False
+def is_valid_option(option:str) -> bool:
+    return True if option in VALID_OPTIONS else False
 
 
 VALID_OPTIONS = ["d", "s", "e", "q", "c", "u", "l", "b"]

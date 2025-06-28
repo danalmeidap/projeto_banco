@@ -92,5 +92,5 @@ def listar_contas_correntes(contas_correntes: Dict[str, str]) -> None:
     print("========================================================\n")
 
 
-def valida_usuario(cpf_usuario: str) -> None:
+def valida_usuario(cpf_usuario: str) -> bool:
     return True if buscar_usuario(cpf_usuario) else False

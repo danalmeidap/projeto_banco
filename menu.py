@@ -13,9 +13,10 @@ from banco import (
     CONTAS_CORRENTES,
 )
 from usuario import criar_usuario, buscar_usuario
+from typing import Tuple
 
 
-def exibir_menu_principal():
+def exibir_menu_principal() -> None:
     """Exibe as opções principais do menu do banco."""
     print("""\n
     [d] Depositar
@@ -29,12 +30,12 @@ def exibir_menu_principal():
     """)
 
 
-def obter_opcao_menu():
+def obter_opcao_menu() -> str:
     """Obtém e retorna a opção escolhida pelo usuário."""
     return input("Escolha uma opção: ").lower()
 
 
-def processar_transacao(option):
+def processar_transacao(option: str) -> None:
     global SALDO, EXTRATO, LIMITE_SAQUES, NUMERO_SAQUES, CONTAS_CORRENTES
     """Processa as opções de transação (depósito, saque, extrato)."""
     if option == "d":
@@ -53,14 +54,13 @@ def processar_transacao(option):
             limite=LIMITE,
             numero_saques=NUMERO_SAQUES,
         )
-        print(SALDO)
     elif option == "e":
         SALDO, EXTRATO = exibir_extrato(SALDO, extrato=EXTRATO)
     else:
         print("Opção inválida para transação.")
 
 
-def obter_dados_usuario():
+def obter_dados_usuario() -> Tuple[str, str, str, str]:
     """Solicita e retorna os dados para criação de um novo usuário."""
     nome = input("Digite o nome do usuário: ")
     data_nascimento = input("Digite a data de nascimento (DD/MM/AAAA): ")
@@ -69,14 +69,14 @@ def obter_dados_usuario():
     return nome, data_nascimento, cpf, endereco
 
 
-def obter_cpf_conta_corrente():
+def obter_cpf_conta_corrente() -> str:
     """Solicita e retorna o CPF do usuário para criação de conta corrente."""
     return input(
         "Digite o CPF do usuário para criar a conta corrente (XXX.XXX.XXX-XX):"
     )
 
 
-def menu_banco():
+def menu_banco() -> None:
     global CONTAS_CORRENTES
     """Função principal que gerencia o fluxo do menu do banco."""
     while True:
