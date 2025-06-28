@@ -2,9 +2,9 @@ from typing import Dict, List, Union
 
 
 def criar_usuario(nome: str, data_nascimento: str, cpf: str, endereco: str) -> str:
-    if cpf in usuarios:
+    if not valida_usuario(cpf):
         raise ValueError("Usuário já cadastrado com este CPF.")
-    cpf_limpo= cpf.replace(".", "").replace("-", "")
+    cpf_limpo = cpf.replace(".", "").replace("-", "")
     cliente = {
         "nome": nome,
         "data_nascimento": data_nascimento,
@@ -21,6 +21,10 @@ def buscar_usuario(cpf: str) -> Union[Dict[str, str], None]:
         if cpf_limpo in usuario:
             return usuario[cpf_limpo]
     return None
+
+
+def valida_usuario(cpf: str) -> bool:
+    return True if buscar_usuario(cpf) else False
 
 
 usuarios: List = []
