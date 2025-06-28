@@ -34,4 +34,4 @@ def is_valid_option(option):
         return False
 
 
-VALID_OPTIONS = ["d", "s", "e", "q"]
+VALID_OPTIONS = ["d", "s", "e", "q", "c", "u", "l", "b"]
