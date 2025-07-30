@@ -1,4 +1,3 @@
-from usuario import usuarios, buscar_usuario
 from utils import check_float
 from conta import Conta
 from deposito import Deposito
