@@ -5,7 +5,7 @@ class ContaCorrente(Conta):
     def __init__(self, numero, cliente, limite=500, limite_saques=3):
         super().__init__(numero, cliente)
         self.__limite = limite
-        self.__limite_sauqes = limite_saques
+        self.__limite_saques = limite_saques
 
     def sacar(self, valor):
         numero_saques = len([transacao for transacao  in self.historico.transacoes if transacao['tipo'] == Saque.__name__])

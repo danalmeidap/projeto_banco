@@ -3,7 +3,7 @@ from historico import Historico
 class Conta:
     def __init__(self, numero, cliente):
         self.__saldo = 0
-        self.__numero = 0
+        self.__numero = numero
         self.__agencia = "0001"
         self.__cliente = cliente
         self.__historico = Historico()
@@ -41,8 +41,9 @@ class Conta:
             print("Operação falhou, você não possue saldo")
 
         elif valor > 0:
-            self__saldo -= valor
+            saldo -= valor
             print("Operação concluida com sucesso")
+            self.__saldo = saldo
             return True
         else:
             print("Operação falhou, valor informado inválido")

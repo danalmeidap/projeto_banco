@@ -1,96 +1,109 @@
 from usuario import usuarios, buscar_usuario
-from typing import Dict, List, Union
-
-SALDO: float = 0.0
-LIMITE: float = 500.0
-EXTRATO: str = ""
-NUMERO_SAQUES: int = 0
-LIMITE_SAQUES: int = 3
-AGENCIA: str = "0001"
-LISTA_USUARIOS: List = usuarios
-numero_conta: int = 1
-proximo_numero_conta = 1
-CONTAS_CORRENTES: List[Dict[str, str]] = []
+from utils import check_float
+from conta import Conta
+from deposito import Deposito
+from saque import Saque
+from cliente import Cliente
+from conta_corrente import ContaCorrente
+from pessoa_fisica import Pessoa_Fisica
 
 
-def gerar_novo_numero_conta() -> int:
-    global proximo_numero_conta
-    numero_atual = proximo_numero_conta
-    proximo_numero_conta += 1
-    return numero_atual
+CONTAS = []
+CLIENTES = []
 
 
-def depositar(valor: float, saldo: float, extrato: str, /) -> Union[float, str]:
-    if valor > 0:
-        saldo += valor
-        extrato += "Depósito: R$ {:.2f}\n".format(valor)
-        print("Depósito realizado com sucesso!")
+def recuperar_conta_corrente(cliente):
+    if not cliente.contas:   
+        print("Cliente não localizado")
+        return 
+    return cliente.contas[0]
+
+
+def depositar(CLIENTES):
+    cpf = input("Digite o CPF: ")
+    cliente:Cliente = filtar_cliente(cpf, CLIENTES)
+    valor  = check_float("Digite o valor do depósito: ")
+    transacao = Deposito(valor)
+    conta = recuperar_conta_corrente(cliente)
+    if not conta:
+        print("Conta não localizada")
+        return 
+    cliente.realizar_transacao(conta, transacao)
+
+
+def criar_conta_corrente(numero_conta, clientes, conta):
+    cpf = input("Digite o CPF (XXX.XXX.XXX-XX)")
+    cpf_limpo = cpf.replace(".", "").replace("-", "")
+    cliente:Cliente = filtar_cliente(cpf_limpo, clientes)
+    conta = ContaCorrente.nova_conta(numero_conta, cliente)
+    CONTAS.append(conta)
+    cliente.contas.append(conta)
+    print("Conta criada com sucesso")
+    
+
+def sacar(CLIENTES):
+    cpf = input("Digite o CPF (XXX.XXX.XXX-XX)")
+    cpf_limpo = cpf.replace(".", "").replace("-", "")
+    cliente:Cliente = filtar_cliente(cpf_limpo, CLIENTES)
+    valor  = check_float("Digite o valor do depósito: ")
+    transacao = Saque(valor)
+    conta = recuperar_conta_corrente(cliente)
+    if not conta:
+        print("Conta não localizada")
+        return
+    cliente.realizar_transacao(conta, transacao)
+
+
+def exibir_extrato(CLIENTES):
+    cpf = input("Digite o CPF")
+    cliente:Cliente = filtar_cliente(cpf, CLIENTES)
+    if not cliente:
+        return
+    conta:Conta  = recuperar_conta_corrente(cliente)
+    if not conta:
+        return 
+
+    print("==============EXTRATO==================")
+    transacoes = conta.historico.transacoes
+
+    extrato = ""
+    if not transacoes:
+        extrato += "Não foram encontradas operações."
+        return
     else:
-        print("Operação falhou! O valor do depósito deve ser positivo.")
-    return saldo, extrato
+        for transacao in transacoes:
+            extrato += f"\n{transacao['tipo']}:\n\t R${transacao['valor']:.2f}"
+    print(extrato)
+    print(f"Saldo de: R$ {conta.saldo:.2f}")
+    print("==============EXTRATO==================")
 
 
-def criar_conta_corrente(agencia: str, cpf_usuario: str) -> Dict[str, str]:
-    novo_numero: int = gerar_novo_numero_conta()
-    if not valida_usuario(cpf_usuario):
-        raise ValueError("Usuário não encontrado. Por favor, crie um usuário primeiro.")
-    cpf_limpo = cpf_usuario.replace(".", "").replace("-", "")
-    conta = {
-        "agencia": agencia,
-        "numero_conta": novo_numero,
-        "usuario": buscar_usuario(cpf_limpo),
-    }
-    print("Conta corrente criada com sucesso!")
-    CONTAS_CORRENTES.append(conta)
-    return conta
+def listar_contas_correntes(contas):
+    for conta in contas:
+        print(conta)
+    
+
+def criar_cliente(CLIENTES):
+    cpf = input("Digite o CPF (XXX.XXX.XXX-XX)")
+    cpf_limpo = cpf.replace(".", "").replace("-", "")
+    cliente:Cliente = filtar_cliente(cpf_limpo, CLIENTES)
+    if cliente:
+        print("Cliente já existente com esse cpf")
+        return 
+    nome, data_nascimento, endereco = obter_dados_usuario()
+    cliente = Pessoa_Fisica(nome, data_nascimento, cpf_limpo, endereco)
+    CLIENTES.append(cliente)
+    print('Cliente criado com sucesso!')
 
 
-def saque_valido(
-    saldo: int, valor: float, numero_saques: int, limite: float, limite_saques
-) -> bool:
-    if numero_saques < limite_saques and valor <= limite and valor <= saldo:
-        return True
-    return False
+def obter_dados_usuario():
+    """Solicita e retorna os dados para criação de um novo usuário."""
+    nome = input("Digite o nome do usuário: ")
+    data_nascimento = input("Digite a data de nascimento (DD/MM/AAAA): ")
+    endereco = input("Digite o endereço: (Logradouro- Bairro- cidade/sigla estado): ")
+    return nome, data_nascimento,endereco
 
 
-def sacar(
-    *, saldo: float, valor: float, extrato: str, limite: float, numero_saques: int
-) -> Union[float, str]:
-    if saque_valido(saldo, valor, numero_saques, limite, LIMITE_SAQUES):
-        saldo -= valor
-        extrato += "Saque: R$ {:.2f}\n".format(valor)
-        numero_saques += 1
-        print("Saque realizado com sucesso!")
-    else:
-        print(
-            "Saque inválido! Verifique o valor, limite ou número de saques realizados."
-        )
-    return saldo, extrato
-
-
-def exibir_extrato(saldo: float, /, *, extrato: str) -> Union[float, str]:
-    print("\n================== Extrato ==================")
-    if not extrato:
-        print("Nenhuma transação realizada.")
-    else:
-        print(extrato)
-    print("Saldo: R$ {:.2f}".format(saldo))
-    print("=============================================\n")
-    return saldo, extrato
-
-
-def listar_contas_correntes(contas_correntes: Dict[str, str]) -> None:
-    """Lista todas as contas correntes cadastradas."""
-    if not contas_correntes:
-        print("Nenhuma conta corrente cadastrada.")
-    print("\n================== Contas Correntes ==================")
-    for conta in contas_correntes:
-        print(
-            f"Agência: {conta['agencia']}, Número da Conta: {conta['numero_conta']}, "
-            f"Usuário: {conta['usuario']['nome']}, CPF: {conta['usuario']['cpf']}"
-        )
-    print("========================================================\n")
-
-
-def valida_usuario(cpf_usuario: str) -> bool:
-    return True if buscar_usuario(cpf_usuario) else False
+def filtar_cliente(cpf, CLIENTES):
+    clientes_filtrados = [cliente for cliente in CLIENTES if cliente.cpf == cpf]
+    return clientes_filtrados[0] if clientes_filtrados else None

@@ -1,19 +1,5 @@
-from utils import is_valid_option, check_float
-from banco import (
-    depositar,
-    sacar,
-    exibir_extrato,
-    criar_conta_corrente,
-    listar_contas_correntes,
-    AGENCIA,
-    SALDO,
-    LIMITE,
-    EXTRATO,
-    NUMERO_SAQUES,
-    CONTAS_CORRENTES,
-)
-from usuario import criar_usuario, buscar_usuario
-from typing import Tuple
+from utils import is_valid_option
+from banco import sacar, depositar, exibir_extrato, criar_conta_corrente, listar_contas_correntes, criar_cliente, CONTAS, CLIENTES
 
 
 def exibir_menu_principal() -> None:
@@ -22,9 +8,8 @@ def exibir_menu_principal() -> None:
     [d] Depositar
     [s] Sacar
     [e] Extrato
-    [u] Novo Usuário
-    [b] Buscar Usuário
-    [c] Criar Conta Corrente
+    [nu] Novo Usuário
+    [nc] Criar Conta Corrente
     [l] Listar Contas Correntes
     [q] Sair
     """)
@@ -36,72 +21,35 @@ def obter_opcao_menu() -> str:
 
 
 def processar_transacao(option: str) -> None:
-    global SALDO, EXTRATO, LIMITE_SAQUES, NUMERO_SAQUES, CONTAS_CORRENTES
-    """Processa as opções de transação (depósito, saque, extrato)."""
+    global CONTAS, CLIENTES
     if option == "d":
-        valor = check_float("Digite o valor a ser depositado: ")
-        SALDO, EXTRATO = depositar(
-            valor,
-            SALDO,
-            EXTRATO,
-        )
-    elif option == "s":
-        valor = check_float("Digite o valor a ser sacado: ")
-        SALDO, EXTRATO = sacar(
-            valor=valor,
-            saldo=SALDO,
-            extrato=EXTRATO,
-            limite=LIMITE,
-            numero_saques=NUMERO_SAQUES,
-        )
-    elif option == "e":
-        SALDO, EXTRATO = exibir_extrato(SALDO, extrato=EXTRATO)
-    else:
-        print("Opção inválida para transação.")
+       depositar(CLIENTES)
 
+    if option == "s":
+       sacar(CLIENTES)
 
-def obter_dados_usuario() -> Tuple[str, str, str, str]:
-    """Solicita e retorna os dados para criação de um novo usuário."""
-    nome = input("Digite o nome do usuário: ")
-    data_nascimento = input("Digite a data de nascimento (DD/MM/AAAA): ")
-    cpf = input("Digite o CPF (XXX.XXX.XXX-XX): ")
-    endereco = input("Digite o endereço: (Logradouro- Bairro- cidade/sigla estado): ")
-    return nome, data_nascimento, cpf, endereco
+    if option == "e":
+       exibir_extrato(CLIENTES)
 
+    if option == "nu":
+       criar_cliente(CLIENTES)
 
-def obter_cpf_conta_corrente() -> str:
-    """Solicita e retorna o CPF do usuário para criação de conta corrente."""
-    return input(
-        "Digite o CPF do usuário para criar a conta corrente (XXX.XXX.XXX-XX):"
-    )
+    if option == "nc":
+       numero_conta = len(CONTAS) - 1
+       criar_conta_corrente(numero_conta, CLIENTES, CONTAS)
+
+    if option == "l":
+       listar_contas_correntes(CONTAS)        
 
 
 def menu_banco() -> None:
-    global CONTAS_CORRENTES
     """Função principal que gerencia o fluxo do menu do banco."""
     while True:
         exibir_menu_principal()
         option = obter_opcao_menu()
 
         if is_valid_option(option):
-            if option in ("d", "s", "e"):
-                processar_transacao(option)
-            elif option == "u":
-                dados_usuario = obter_dados_usuario()
-                criar_usuario(*dados_usuario)
-            elif option == "b":
-                cpf_usuario = input(
-                    "Digite o CPF do usuário a ser buscado (XXX.XXX.XXX-XX): "
-                )
-                print(buscar_usuario(cpf_usuario))
-            elif option == "c":
-                cpf_usuario = obter_cpf_conta_corrente()
-                criar_conta_corrente(AGENCIA, cpf_usuario)
-            elif option == "l":
-                print("Listando contas correntes...")
-                listar_contas_correntes(CONTAS_CORRENTES)
-            elif option == "q":
-                print("Saindo do sistema...")
-                break
-        else:
-            print("Opção inválida. Por favor, tente novamente.")
+             processar_transacao(option)
+        if option == "q":
+            break
+         

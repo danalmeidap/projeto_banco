@@ -1,7 +1,6 @@
 from transacao import Transacao
 from conta import Conta
-
-
+    
 class Cliente:
     def __init__(self, endereco):
         self.__endereco = endereco
@@ -16,6 +15,7 @@ class Cliente:
         if not isinstance(novo_endereco, str):
             raise ValueError("O endereço precisa ser uma string não vazia")
         self.__endereco = novo_endereco
+
 
     @property
     def contas(self):

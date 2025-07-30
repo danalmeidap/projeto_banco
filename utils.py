@@ -30,4 +30,4 @@ def is_valid_option(option:str) -> bool:
     return True if option in VALID_OPTIONS else False
 
 
-VALID_OPTIONS = ["d", "s", "e", "q", "c", "u", "l", "b"]
+VALID_OPTIONS = ["d", "s", "e", "nc", "nu", "l",]
