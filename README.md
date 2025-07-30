@@ -22,6 +22,8 @@ Para utilizar basta clonar o repositório e usar o comando abaixo:
 - [x] Busca usuario
 - [x] Cria uma nova conta corrente a partir de usuario existente
 - [x] Lista Contas correntes
+- [x] Divisão em camadas usando POO
+- [x] Atualização de menus para aproveitar essas funcionalidades
 
 ## Redes Sociais
 
