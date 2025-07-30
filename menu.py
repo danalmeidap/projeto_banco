@@ -1,10 +1,20 @@
 from utils import is_valid_option
-from banco import sacar, depositar, exibir_extrato, criar_conta_corrente, listar_contas_correntes, criar_cliente, CONTAS, CLIENTES
+from banco import (
+    sacar,
+    depositar,
+    exibir_extrato,
+    criar_conta_corrente,
+    listar_contas_correntes,
+    criar_cliente,
+    CONTAS,
+    CLIENTES,
+)
 
 
 def exibir_menu_principal() -> None:
     """Exibe as opções principais do menu do banco."""
-    print("""\n
+    print(
+        """\n
     [d] Depositar
     [s] Sacar
     [e] Extrato
@@ -12,7 +22,8 @@ def exibir_menu_principal() -> None:
     [nc] Criar Conta Corrente
     [l] Listar Contas Correntes
     [q] Sair
-    """)
+    """
+    )
 
 
 def obter_opcao_menu() -> str:
@@ -23,23 +34,23 @@ def obter_opcao_menu() -> str:
 def processar_transacao(option: str) -> None:
     global CONTAS, CLIENTES
     if option == "d":
-       depositar(CLIENTES)
+        depositar(CLIENTES)
 
     if option == "s":
-       sacar(CLIENTES)
+        sacar(CLIENTES)
 
     if option == "e":
-       exibir_extrato(CLIENTES)
+        exibir_extrato(CLIENTES)
 
     if option == "nu":
-       criar_cliente(CLIENTES)
+        criar_cliente(CLIENTES)
 
     if option == "nc":
-       numero_conta = len(CONTAS) - 1
-       criar_conta_corrente(numero_conta, CLIENTES, CONTAS)
+        numero_conta = len(CONTAS) - 1
+        criar_conta_corrente(numero_conta, CLIENTES, CONTAS)
 
     if option == "l":
-       listar_contas_correntes(CONTAS)        
+        listar_contas_correntes(CONTAS)
 
 
 def menu_banco() -> None:
@@ -49,7 +60,6 @@ def menu_banco() -> None:
         option = obter_opcao_menu()
 
         if is_valid_option(option):
-             processar_transacao(option)
+            processar_transacao(option)
         if option == "q":
             break
-         

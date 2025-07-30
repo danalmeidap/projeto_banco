@@ -10,8 +10,8 @@ class Deposito(Transacao):
     def valor(self):
         return self.__valor
 
-    def registrar(self, conta:Conta):
+    def registrar(self, conta: Conta):
         sucesso_transacao = conta.depositar(self.valor)
 
         if sucesso_transacao:
-            conta.historico .adicionar_transacao(self)       
+            conta.historico.adicionar_transacao(self)
