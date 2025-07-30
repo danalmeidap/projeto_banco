@@ -1,3 +1,7 @@
+from transacao import Transacao
+from conta import Conta
+
+
 class Cliente:
     def __init__(self, endereco):
         self.__endereco = endereco
@@ -17,9 +21,9 @@ class Cliente:
     def contas(self):
         return self.__contas
 
-    def realizar_transacao(self, conta, transacao):
-        pass
+    def realizar_transacao(self, conta, transacao:Transacao):
+        transacao.registrar(conta)
 
-    def adiconar_conta(self, conta):
+    def adiconar_conta(self, conta:Conta):
         self.__contas.append(conta)
     
