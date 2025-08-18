@@ -24,6 +24,7 @@ Para utilizar basta clonar o repositório e usar o comando abaixo:
 - [x] Lista Contas correntes
 - [x] Divisão em camadas usando POO
 - [x] Atualização de menus para aproveitar essas funcionalidades
+- [x] Gera logs das operações em um arquivo de texto 
 
 ## Redes Sociais
 
