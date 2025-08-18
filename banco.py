@@ -5,12 +5,14 @@ from saque import Saque
 from cliente import Cliente
 from conta_corrente import ContaCorrente
 from pessoa_fisica import Pessoa_Fisica
+from logs import log_operação
 
 
 CONTAS = []
 CLIENTES = []
 
 
+@log_operação
 def recuperar_conta_corrente(cliente):
     if not cliente.contas:
         print("Cliente não localizado")
@@ -18,6 +20,7 @@ def recuperar_conta_corrente(cliente):
     return cliente.contas[0]
 
 
+@log_operação
 def depositar(CLIENTES):
     cpf = input("Digite o CPF: ")
     cliente: Cliente = filtar_cliente(cpf, CLIENTES)
@@ -30,6 +33,7 @@ def depositar(CLIENTES):
     cliente.realizar_transacao(conta, transacao)
 
 
+@log_operação
 def criar_conta_corrente(numero_conta, clientes, conta):
     cpf = input("Digite o CPF (XXX.XXX.XXX-XX)")
     cpf_limpo = cpf.replace(".", "").replace("-", "")
@@ -40,6 +44,7 @@ def criar_conta_corrente(numero_conta, clientes, conta):
     print("Conta criada com sucesso")
 
 
+@log_operação
 def sacar(CLIENTES):
     cpf = input("Digite o CPF (XXX.XXX.XXX-XX)")
     cpf_limpo = cpf.replace(".", "").replace("-", "")
@@ -53,6 +58,7 @@ def sacar(CLIENTES):
     cliente.realizar_transacao(conta, transacao)
 
 
+@log_operação
 def exibir_extrato(CLIENTES):
     cpf = input("Digite o CPF")
     cliente: Cliente = filtar_cliente(cpf, CLIENTES)
@@ -77,11 +83,13 @@ def exibir_extrato(CLIENTES):
     print("==============EXTRATO==================")
 
 
+@log_operação
 def listar_contas_correntes(contas):
     for conta in contas:
         print(conta)
 
 
+@log_operação
 def criar_cliente(CLIENTES):
     cpf = input("Digite o CPF (XXX.XXX.XXX-XX)")
     cpf_limpo = cpf.replace(".", "").replace("-", "")
@@ -99,14 +107,10 @@ def obter_dados_usuario():
     """Solicita e retorna os dados para criação de um novo usuário."""
     nome = input("Digite o nome do usuário: ")
     data_nascimento = input("Digite a data de nascimento (DD/MM/AAAA): ")
-    endereco = input(
-        "Digite o endereço: (Logradouro- Bairro- cidade/sigla estado): "
-    )
+    endereco = input("Digite o endereço: (Logradouro- Bairro- cidade/sigla estado): ")
     return nome, data_nascimento, endereco
 
 
 def filtar_cliente(cpf, CLIENTES):
-    clientes_filtrados = [
-        cliente for cliente in CLIENTES if cliente.cpf == cpf
-    ]
+    clientes_filtrados = [cliente for cliente in CLIENTES if cliente.cpf == cpf]
     return clientes_filtrados[0] if clientes_filtrados else None
