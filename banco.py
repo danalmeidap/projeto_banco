@@ -6,6 +6,7 @@ from cliente import Cliente
 from conta_corrente import ContaCorrente
 from pessoa_fisica import Pessoa_Fisica
 from logs import log_operação
+from conta_iterador import ContaIterador
 
 
 CONTAS = []
@@ -85,7 +86,8 @@ def exibir_extrato(CLIENTES):
 
 @log_operação
 def listar_contas_correntes(contas):
-    for conta in contas:
+    contas_iterador = ContaIterador(contas)
+    for conta in contas_iterador:
         print(conta)
 
 
