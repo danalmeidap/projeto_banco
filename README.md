@@ -18,6 +18,7 @@ Para utilizar basta clonar o repositório e usar o comando abaixo:
 - [x] Deposita um valor
 - [x] Saca um valor
 - [x] Exibe extrato
+- [x] Exibe transações diárias 
 - [x] Cria novo usuario
 - [x] Busca usuario
 - [x] Cria uma nova conta corrente a partir de usuario existente
