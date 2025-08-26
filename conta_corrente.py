@@ -27,11 +27,11 @@ class ContaCorrente(Conta):
             self.__data_ultimna_transacao = hoje
 
         numero_saques = len(
-            [
-                transacao
-                for transacao in self.historico.transacoes
-                if transacao["tipo"] == Saque.__name__
-            ]
+           [
+            transacao
+            for transacao in self.historico.transacoes
+            if transacao["tipo"] == Saque.__name__ and transacao["data"][0:10] == hoje.strftime("%d-%m-%Y")
+           ]
         )
 
         if self.__transacoes >= self.__limite_transacoes:
