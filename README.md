@@ -27,6 +27,7 @@ Para utilizar basta clonar o repositório e usar o comando abaixo:
 - [x] Gera logs das operações em um arquivo de texto
 - [x] Limite para saques
 - [x] Limite diário para transações
+- [x] Saques e transacoes tratados como operações diárias
  
 
 ## Redes Sociais
