@@ -3,6 +3,7 @@ from banco import (
     sacar,
     depositar,
     exibir_extrato,
+    exibir_operacoes_do_dia,
     criar_conta_corrente,
     listar_contas_correntes,
     criar_cliente,
@@ -18,6 +19,7 @@ def exibir_menu_principal() -> None:
     [d] Depositar
     [s] Sacar
     [e] Extrato
+    [t] Transações do Dia
     [nu] Novo Usuário
     [nc] Criar Conta Corrente
     [l] Listar Contas Correntes
@@ -41,6 +43,9 @@ def processar_transacao(option: str) -> None:
 
     if option == "e":
         exibir_extrato(CLIENTES)
+
+    if option == "t":
+        exibir_operacoes_do_dia(CLIENTES)
 
     if option == "nu":
         criar_cliente(CLIENTES)

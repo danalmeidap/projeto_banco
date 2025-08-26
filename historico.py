@@ -7,17 +7,16 @@ class Historico:
 
     @property
     def transacoes(self):
-        return  self.__transacoes
+        return self.__transacoes
 
     def adicionar_transacao(self, transacao):
         self.__transacoes.append(
-        {
-        "tipo": transacao.__class__.__name__,
-        "valor": transacao.valor,
-        "data": datetime.now().strftime("%d-%m-%Y %H:%M:%S")
-        }
+            {
+                "tipo": transacao.__class__.__name__,
+                "valor": transacao.valor,
+                "data": datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
+            }
         )
-        
 
     def gerar_relatorio(self, tipo_transacao=None):
         if not tipo_transacao:
@@ -25,3 +24,11 @@ class Historico:
         for transacao in self.__transacoes:
             if transacao["tipo"] == tipo_transacao:
                 yield transacao
+
+    def transacoes_do_dia(self):
+        hoje = datetime.now().strftime("%d-%m-%Y")
+        return [
+            transacao
+            for transacao in self._transacoes
+            if transacao["data"][0:10] == hoje
+        ]

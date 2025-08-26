@@ -85,6 +85,28 @@ def exibir_extrato(CLIENTES):
 
 
 @log_operação
+def exibir_operacoes_do_dia(CLIENTES):
+    cpf = input("Digite o CPF")
+    cliente: Cliente = filtar_cliente(cpf, CLIENTES)
+    if not cliente:
+        return
+    conta: Conta = recuperar_conta_corrente(cliente)
+    if not conta:
+        return
+    print("========OPERAÇÕES DO DIA========")
+    transacoes = conta.historico.transacoes_do_dia()
+    extrato = ""
+    if not transacoes:
+        extrato += "Não foram encontradas operações hoje."
+        return
+    else:
+        for transacao in transacoes:
+            print(
+                f"\n{transacao['tipo']}:\n\t R${transacao['valor']:.2f} \n\t Data: {transacao['data']}"
+            )
+
+
+@log_operação
 def listar_contas_correntes(contas):
     contas_iterador = ContaIterador(contas)
     for conta in contas_iterador:
